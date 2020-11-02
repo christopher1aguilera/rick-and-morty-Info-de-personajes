@@ -24,9 +24,9 @@ const llamadoPersonajes = (() => {
     const getUser = async (id) => {
         try {
             const url = `${baseUrl}/${id}`;
-            Promise.all([request(url)])
-            .then(resp2 => {
-                let d2 = new DetallesPersonajes(`${resp2[0].id}`,`${resp2[0].name}`,`${resp2[0].status}`,`${resp2[0].species}`,`${resp2[0].gender}`,`${resp2[0].created}`,`${resp2[0].origin.name}`,`${resp2[0].location.name}`,`${resp2[0].episode.length}`)
+            // const {id} = await request(url)
+            const {name, status, species, gender, created, origin, location, episode} = await request(url)
+                let d2 = new DetallesPersonajes(id,name,status,species,gender,created,origin.name,location.name,episode.length)
                 d2.infoGeneral()
                 let info = d2.infoModal()
                 printInfoModal(info)
@@ -58,8 +58,6 @@ const llamadoPersonajes = (() => {
                     primero.append(segundo)
                     result.append(primero)
                 }
-            })
-            .catch(err => console.log('err', err))
         }
         catch{
             console.log("error")
