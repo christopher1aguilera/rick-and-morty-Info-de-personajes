@@ -7,13 +7,14 @@ const llamadoPersonajes = (() => {
     let baseUrl, result, save
         baseUrl = "https://rickandmortyapi.com/api/character/"
         result = $(".resultados")
-        save
+        save = []
 //1 funcion asicrona privada try/catch
     const request = async (url) => {
         try{
             const results = await fetch(url);
-            save = await results.json();
-            return save;
+            const response = await results.json();
+            save.push(response)
+            return response;
         }
         catch{
             console.log("error")
@@ -70,6 +71,7 @@ const llamadoPersonajes = (() => {
             let j = 1
             Promise.all([request(baseUrl + "?page=" + j)])
             .then(resp => {
+                save.pop()
                 for (let id = 1; id < 21; id++){
                     //colocar imagenes
                     let firstCol = $(`<div class="col-md-4" style="padding-top:50px"></div>`)
@@ -85,7 +87,7 @@ const llamadoPersonajes = (() => {
         //2 funcion publica dentro del retorno
         getdelete: () => {
             $("div").removeClass("spinner-border");
-            $("#cantidadPersonajes").append(`${save.id}`)
+            $("#cantidadPersonajes").append(`${save.length}`)
         }
     }
 })()
